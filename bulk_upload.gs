@@ -79,9 +79,13 @@ function doGet(ter) {
   });
   
   var date = ',' + filename.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/);
+  var skipped = false;
   csv = csv.replace(/tags$/m, 'date,tag[' + TAGS.join('],tag[') + ']');
-  csv = csv.replace(/,("[^"]+")?$/mg, function(match, stripped) {
-    if(!stripped)
+  csv = csv.replace(/,([^,\n]+|"[^"]+")?$/mg, function(match, stripped) {
+    if(!skipped) {
+      skipped = true;
+      return match;
+    } else if(!stripped)
       return date + ','.repeat(TAGS.length);
     
     var repl = date;
