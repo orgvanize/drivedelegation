@@ -39,10 +39,13 @@ function doGet(request) {
   var folder = DriveApp.getFolderById(config.folder);
   var files = folder.getFilesByName(filename);
   var file;
-  if(!files.hasNext() || (file = files.next()).getName() != filename)
+  var contents;
+  if(!files.hasNext()
+     || (file = files.next()).getName() != filename
+     || (contents = file.getBlob().getDataAsString()).startsWith('%PDF'))
     return ContentService.createTextOutput('No file with the name: \'' + filename + '\'');
   
-  return ContentService.createTextOutput(file.getBlob().getDataAsString());
+  return ContentService.createTextOutput(contents);
 }
 
 function lookup(table, key, fallback = null) {
