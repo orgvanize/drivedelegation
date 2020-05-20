@@ -37,10 +37,12 @@ function doGet(request) {
   
   var filename = entry[config.filenameColumn];
   var folder = DriveApp.getFolderById(config.folder);
-  var file = folder.getFilesByName(filename);
-  if(!file.hasNext())
+  var files = folder.getFilesByName(filename);
+  var file;
+  if(!files.hasNext() || (file = files.next()).getName() != filename)
     return ContentService.createTextOutput('No file with the name: \'' + filename + '\'');
-  return ContentService.createTextOutput(file.next().getBlob().getDataAsString());
+  
+  return ContentService.createTextOutput(file.getBlob().getDataAsString());
 }
 
 function lookup(table, key, fallback = null) {
