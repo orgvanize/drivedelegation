@@ -7,6 +7,11 @@ const FILENAME_COLUMN = 2;
 const CLAIM_COLUMN = 3;
 const DONE_COLUMN = 4;
 
+const WHITELIST = {
+  'contact[cell]': true,
+  'question[Will this person attend?]': true,
+  'tags': true,
+};
 const VANID = 'contact[external_id]';
 const TAGS = [
   'Angry/Refused',
@@ -67,15 +72,28 @@ function doGet(ter) {
     return ContentService.createTextOutput(csv);
   
   csv = csv.replace(/\r/g, '');
+
+  var preserve = csv.match(/^.*$/m)[0].split(',');
+  for(var idx = 0; idx < preserve.length; ++idx)
+    if(WHITELIST[preserve[idx]])
+      preserve[idx] = idx;
+  preserve.filter(function(each) {
+    return typeof each == 'number';
+  });
   
   var vanidx;
-  csv = csv.replace(/^.*$/mg, function(line) {
+  csv = csv.replace(/^[^"\n]+/mg, function(line) {
+    var fields = line.split(',');
+    line = fields.filter(function(match, idx) {
+      return preserve.includes(idx);
+    }).join(',');
+    
     if(!vanidx) {
-      vanidx = line.split(',').indexOf(VANID);
+      vanidx = fields.indexOf(VANID);
       return 'vanId,' + line;
     }
     
-    return line.split(',')[vanidx] + ',' + line;
+    return fields[vanidx] + ',' + line;
   });
   
   var date = ',' + filename.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/);
