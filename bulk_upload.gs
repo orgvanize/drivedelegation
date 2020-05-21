@@ -54,7 +54,7 @@ function doEdit(ed) {
   }
   
   var href = PropertiesService.getScriptProperties().getProperty('self') + '?record=' + range.getRow();
-  var link = HtmlService.createHtmlOutput('<a href="' + href + '" target="_blank">' + href + '</a>');
+  var link = HtmlService.createHtmlOutput('<a href="' + href + '">' + href + '</a>');
   SpreadsheetApp.getUi().showModalDialog(link, 'Click to download');
 }
 
@@ -69,7 +69,7 @@ function doGet(ter) {
                 + 'record=' + row);
   sheet.getRange(row, CLAIM_COLUMN).removeCheckboxes();
   if(csv.indexOf(',') == -1)
-    return ContentService.createTextOutput(csv);
+    return HtmlService.createHtmlOutput(csv).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
   
   csv = csv.replace(/\r/g, '');
 
