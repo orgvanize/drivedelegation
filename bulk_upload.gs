@@ -72,8 +72,10 @@ function doGet(ter) {
   if(csv.indexOf(',') == -1)
     return HtmlService.createHtmlOutput(csv).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
   
+  // Start with a good 'ol dos2unix.
   csv = csv.replace(/\r/g, '');
-
+  
+  // Compile a list of the columns we'll be preserving. Note that we always "keep" vanId.
   var preserve = csv.match(/^.*$/m)[0].split(',');
   for(var idx = 0; idx < preserve.length; ++idx)
     if(WHITELIST[preserve[idx]])
@@ -82,6 +84,7 @@ function doGet(ter) {
     return typeof each == 'number';
   });
   
+  // Time to actually remove the unwanted columns, then add the vanId one.
   var vanidx;
   csv = csv.replace(/^[^"\n]+/mg, function(line) {
     var fields = line.split(',');
@@ -97,6 +100,7 @@ function doGet(ter) {
     return fields[vanidx] + ',' + line;
   });
   
+  // Add a date column parsed from the filename and explode tags into multiple columns.
   var date = ',' + filename.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/);
   var skipped = false;
   csv = csv.replace(/tags$/m, 'date,tag[' + TAGS.join('],tag[') + ']');
