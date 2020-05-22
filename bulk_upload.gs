@@ -13,7 +13,9 @@ const WHITELIST = {
   'question[Will this person attend?]': true,
   'tags': true,
 };
-const VANID = 'contact[external_id]';
+const VANID = {
+  'Virtual town hall': 'contact[external_id]',
+};
 const TAGS = [
   'Angry/Refused',
   'Engel Supporter',
@@ -47,13 +49,6 @@ function doEdit(ed) {
   } else if(!range.isChecked())
     return;
   
-  var type = range.getSheet().getRange(range.getRow(), TYPE_COLUMN).getValue();
-  if(type != 'Virtual town hall') {
-    range.uncheck();
-    SpreadsheetApp.getUi().alert('Unsupported request type: \'' + type + '\'');
-    return;
-  }
-  
   var href = PropertiesService.getScriptProperties().getProperty('self') + '?record=' + range.getRow();
   var link = HtmlService.createHtmlOutput('<a href="' + href + '">' + href + '</a>');
   SpreadsheetApp.getUi().showModalDialog(link, 'Click to download');
@@ -64,6 +59,11 @@ function doGet(ter) {
   var sheet = doc.getSheetByName(REQUESTS_SHEET);
   var row = ter.parameter.record;
   var filename = sheet.getRange(row, FILENAME_COLUMN).getValue();
+  var type = sheet.getRange(row, TYPE_COLUMN).getValue();
+  if(!VANID[type])
+    return HtmlService.createHtmlOutput('Unsupported request type: \'' + type + '\'')
+                      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+  
   var csv = get(PropertiesService.getScriptProperties().getProperty('downloader') + '?'
                 + 'access_token=' + ScriptApp.getOAuthToken() + '&'
                 + 'tracker=' + doc.getId() + '&'
@@ -99,7 +99,7 @@ function doGet(ter) {
     }).join(',');
     
     if(!vanidx) {
-      vanidx = fields.indexOf(VANID);
+      vanidx = fields.indexOf(VANID[type]);
       return 'vanId,' + line;
     }
     
