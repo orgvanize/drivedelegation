@@ -9,6 +9,7 @@ const DONE_COLUMN = 4;
 
 const WHITELIST = {
   'contact[cell]': true,
+  'contact[optOut]': true,
   'question[Will this person attend?]': true,
   'tags': true,
 };
