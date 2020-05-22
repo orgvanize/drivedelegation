@@ -75,6 +75,12 @@ function doGet(ter) {
   // Start with a good 'ol dos2unix.
   csv = csv.replace(/\r/g, '');
   
+  // And for my next trick, I'll disappear all strings except the last one.
+  // This assumes that the tags column is the very last one!
+  csv = csv.replace(/"([^"]+)",/g, function(match, quoted) {
+    return quoted.replace(/,/g, ';') + ',';
+  });
+  
   // Compile a list of the columns we'll be preserving. Note that we always "keep" vanId.
   var preserve = csv.match(/^.*$/m)[0].split(',');
   for(var idx = 0; idx < preserve.length; ++idx)
