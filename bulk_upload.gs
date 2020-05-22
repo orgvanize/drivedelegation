@@ -10,13 +10,23 @@ const DONE_COLUMN = 4;
 const WHITELIST = {
   'contact[cell]': true,
   'contact[optOut]': true,
+  
+  // Type 'Absentee ballot survey':
+  'question[Do they see the link?]': true,
+  'question[Done submitting?]': true,
+  'question[Have they requested an absentee ballot yet?]': true,
+  'question[Want additional help?]': true,
+  
+  // Type 'Virtual town hall':
   'question[Will this person attend?]': true,
   'tags': true,
 };
 const VANID = {
+  'Absentee ballot survey': 'contact[external_ID]',
   'Virtual town hall': 'contact[external_id]',
 };
 const TAGS = [
+  'Absentee - Will get to it later',
   'Angry/Refused',
   'Engel Supporter',
   'Going to Attend',
