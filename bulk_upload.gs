@@ -21,10 +21,6 @@ const WHITELIST = {
   'question[Will this person attend?]': true,
   'tags': true,
 };
-const VANID = {
-  'Absentee ballot survey': 'contact[external_ID]',
-  'Virtual town hall': 'contact[external_id]',
-};
 const TAGS = [
   'Absentee - Will get to it later',
   'Angry/Refused',
@@ -70,7 +66,8 @@ function doGet(ter) {
   var row = ter.parameter.record;
   var filename = sheet.getRange(row, FILENAME_COLUMN).getValue();
   var type = sheet.getRange(row, TYPE_COLUMN).getValue();
-  if(!VANID[type])
+  var vanid = lookup('Request types', type);
+  if(!vanid)
     return HtmlService.createHtmlOutput('Unsupported request type: \'' + type + '\'')
                       .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
   
@@ -109,7 +106,7 @@ function doGet(ter) {
     }).join(',');
     
     if(!vanidx) {
-      vanidx = fields.indexOf(VANID[type]);
+      vanidx = fields.indexOf(vanid);
       return 'vanId,' + line;
     }
     
@@ -143,6 +140,23 @@ function doGet(ter) {
   return ContentService.createTextOutput(csv)
                        .setMimeType(ContentService.MimeType.CSV)
                        .downloadAsFile(filename.replace(/\(/g, '').replace(/\)/g, '').replace(/!/g, ''));
+}
+
+function lookup(table, key, fallback = null) {
+  if(!key)
+    return fallback;
+  
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(table);
+  if(sheet.getLastRow() <= 2)
+    return fallback;
+  
+  var cell = sheet.getRange(2, 1, sheet.getLastRow() - 1)
+                  .createTextFinder(key)
+                  .matchEntireCell(true)
+                  .findNext();
+  if(!cell)
+    return fallback;
+  return sheet.getRange(cell.getRow(), 2).getValue();
 }
 
 function get(resource, authorization) {
