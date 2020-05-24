@@ -139,7 +139,7 @@ function doGet(ter) {
   
   return ContentService.createTextOutput(csv)
                        .setMimeType(ContentService.MimeType.CSV)
-                       .downloadAsFile(filename.replace(/\(/g, '').replace(/\)/g, '').replace(/!/g, ''));
+                       .downloadAsFile(filename.replace(/\(/g, '').replace(/\)/g, '').replace(/!/g, '').replace(/#/g, ''));
 }
 
 function lookup(table, key, fallback = null) {
