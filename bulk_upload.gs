@@ -85,7 +85,7 @@ function doGet(ter) {
   // And for my next trick, I'll disappear all strings except the last one.
   // This assumes that the tags column is the very last one!
   csv = csv.replace(/"([^"]+)",/g, function(match, quoted) {
-    return quoted.replace(/,/g, ';') + ',';
+    return quoted.replace(/,|\n/g, ';') + ',';
   });
   
   // Compile a list of the columns we'll be preserving. Note that we always "keep" vanId.
