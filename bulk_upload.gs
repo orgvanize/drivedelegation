@@ -17,6 +17,10 @@ const WHITELIST = {
   'question[Have they requested an absentee ballot yet?]': true,
   'question[Want additional help?]': true,
   
+  // Type 'Undecided phonebank':
+  'First Call Date': true,
+  'Pledge': true,
+  
   // Type 'Virtual town hall':
   'question[Will this person attend?]': true,
   'tags': true,
