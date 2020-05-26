@@ -108,20 +108,26 @@ function doGet(ter) {
   
   // Compile a list of the columns we'll be preserving. Note that we always "keep" vanId.
   var preserve = csv.match(/^.*$/m)[0].split(',');
-  for(var idx = 0; idx < preserve.length; ++idx)
-    if(WHITELIST[preserve[idx]])
-      preserve[idx] = idx;
-  preserve.filter(function(each) {
-    return typeof each == 'number';
-  });
+  for(var idx = 0; idx < preserve.length; ++idx) {
+    var action = WHITELIST[preserve[idx]];
+    if(action)
+      preserve[idx] = [idx, action];
+  }
+  preserve = Object.fromEntries(preserve.filter(Array.isArray));
   
   // Time to actually remove the unwanted columns, then add the vanId one.
   var vanidx;
   csv = csv.replace(/^[^"\n]+/mg, function(line) {
     var fields = line.split(',');
-    line = fields.filter(function(match, idx) {
-      return preserve.includes(idx);
-    }).join(',');
+    var line = [];
+    for(var idx = 0; idx < fields.length; ++idx) {
+      var transform = preserve[idx];
+      if(typeof transform == 'function')
+        line.push(transform(fields[idx]));
+      else if(transform)
+        line.push(fields[idx]);
+    }
+    line = line.join(',');
     
     if(!vanidx) {
       vanidx = fields.indexOf(vanid);
@@ -160,6 +166,14 @@ function doGet(ter) {
   });
   
   return serve(filename, csv);
+}
+
+function transform(transform, oldlabel, newlabel = oldlabel) {
+  return function(value) {
+    if(value == oldlabel)
+      return newlabel;
+    return transform(value);
+  }
 }
 
 function lookup(table, key, fallback = null) {
