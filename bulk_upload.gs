@@ -113,6 +113,9 @@ function doGet(ter) {
     return fields[vanidx] + ',' + line;
   });
   
+  if(!csv.match(/^[^\n]+,tags\n/))
+    return serve(filename, csv);
+  
   // Add a date column parsed from the filename and explode tags into multiple columns.
   var date = ',' + filename.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/);
   var skipped = false;
@@ -137,9 +140,7 @@ function doGet(ter) {
     return repl;
   });
   
-  return ContentService.createTextOutput(csv)
-                       .setMimeType(ContentService.MimeType.CSV)
-                       .downloadAsFile(filename.replace(/\(/g, '').replace(/\)/g, '').replace(/!/g, '').replace(/#/g, ''));
+  return serve(filename, csv);
 }
 
 function lookup(table, key, fallback = null) {
@@ -167,4 +168,10 @@ function get(resource, authorization) {
       },
     };
   return UrlFetchApp.fetch(resource, authorization).getContentText();
+}
+
+function serve(filename, contents, mime = ContentService.MimeType.CSV) {
+  return ContentService.createTextOutput(contents)
+                       .setMimeType(mime)
+                       .downloadAsFile(filename.replace(/\(|\)|!|#/g, ''));
 }
