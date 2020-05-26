@@ -28,10 +28,10 @@ const WHITELIST = {
   'tags': true,
   
   // Type 'Westchester absentee ballot request':
-  'DT_ADDED': true,
-  'DT_REQUEST': true,
-  'DT_RETURN': true,
-  'DT_MAILED': true,
+  'DT_ADDED': transform(addColumnBoolean, 'DT_ADDED', 'DT_ADDED,ADDED'),
+  'DT_REQUEST': transform(addColumnBoolean, 'DT_REQUEST', 'DT_REQUEST,REQUEST'),
+  'DT_RETURN': transform(addColumnBoolean, 'DT_RETURN', 'DT_RETURN,RETURN'),
+  'DT_MAILED': transform(addColumnBoolean, 'DT_MAILED', 'DT_MAILED,MAILED'),
 };
 const TAGS = [
   'Absentee - Will get to it later',
@@ -174,6 +174,10 @@ function transform(transform, oldlabel, newlabel = oldlabel) {
       return newlabel;
     return transform(value);
   }
+}
+
+function addColumnBoolean(value) {
+  return value + ',' + Boolean(value);
 }
 
 function lookup(table, key, fallback = null) {
