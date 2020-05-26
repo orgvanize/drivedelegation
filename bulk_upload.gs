@@ -80,8 +80,14 @@ function doGet(ter) {
                 + 'tracker=' + doc.getId() + '&'
                 + 'record=' + row);
   sheet.getRange(row, CLAIM_COLUMN).removeCheckboxes();
+  
+  if(filename.endsWith('.txt'))
+    csv = csv.replace(/^([A-Z]*[0-9]+)[^\n]+[A-Z](\d{4})?(\d{2})?(\d{2})?[^\n]*$/mg, '$1,$2-$3-$4');
   if(csv.indexOf(',') == -1)
-    return HtmlService.createHtmlOutput(csv).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+    return HtmlService.createHtmlOutput(csv)
+                      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+  if(filename.endsWith('.txt'))
+    return serve(filename + '.csv', 'countyId,date\n' + csv);
   
   // Start with a good 'ol dos2unix.
   csv = csv.replace(/\r/g, '');
