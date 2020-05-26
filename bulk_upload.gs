@@ -26,6 +26,12 @@ const WHITELIST = {
   // Type 'Virtual town hall':
   'question[Will this person attend?]': true,
   'tags': true,
+  
+  // Type 'Westchester absentee ballot request':
+  'DT_ADDED': true,
+  'DT_REQUEST': true,
+  'DT_RETURN': true,
+  'DT_MAILED': true,
 };
 const TAGS = [
   'Absentee - Will get to it later',
