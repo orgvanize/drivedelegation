@@ -2,6 +2,8 @@
 // Session.getEffectiveUser().getEmail()
 
 const REQUESTS_SHEET = 'Requests';
+const TYPES_SHEET = 'Request types';
+
 const TYPE_COLUMN = 1;
 const FILENAME_COLUMN = 2;
 const CLAIM_COLUMN = 3;
@@ -70,7 +72,7 @@ function doGet(ter) {
   var row = ter.parameter.record;
   var filename = sheet.getRange(row, FILENAME_COLUMN).getValue();
   var type = sheet.getRange(row, TYPE_COLUMN).getValue();
-  var vanid = lookup('Request types', type);
+  var vanid = lookup(TYPES_SHEET, type);
   if(!vanid)
     return HtmlService.createHtmlOutput('Unsupported request type: \'' + type + '\'')
                       .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
