@@ -122,7 +122,8 @@ function doGet(ter) {
       return 'vanId,' + line;
     }
     
-    return fields[vanidx] + ',' + line;
+    var id = fields[vanidx].replace(/^.+(\d{10})$/, '$1');
+    return id + ',' + line;
   });
   
   if(!csv.match(/^[^\n]+,tags\n/))
