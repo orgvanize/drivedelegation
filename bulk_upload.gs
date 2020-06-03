@@ -152,11 +152,22 @@ function doGet(ter) {
     return HtmlService.createHtmlOutput('Data file missing primary key column: \'' + vanid + '\'')
                       .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
   
-  if(!csv.match(/^[^\n]+,tags\n/))
+  var date = filename.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/);
+  if(!csv.match(/^[^\n]+,tags\n/)) {
+    if(date) {
+      var labelled = false;
+      csv = csv.replace(/$/mg, function() {
+        if(!labelled) {
+          labelled = true;
+          return ',date';
+        }
+        return ',' + date;
+      });
+    }
     return serve(filename, csv);
+  }
   
   // Add a date column parsed from the filename and explode tags into multiple columns.
-  var date = ',' + filename.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/);
   var skipped = false;
   csv = csv.replace(/tags$/m, 'date,tag[' + TAGS.join('],tag[') + ']');
   csv = csv.replace(/,([^,\n]+|"[^"]+")?$/mg, function(match, stripped) {
@@ -164,9 +175,9 @@ function doGet(ter) {
       skipped = true;
       return match;
     } else if(!stripped)
-      return date + ','.repeat(TAGS.length);
+      return ',' + date + ','.repeat(TAGS.length);
     
-    var repl = date;
+    var repl = ',' + date;
     var tags = stripped.replace(/"/g, '').split(',');
     if(tags.includes(TAGS[TAGS.length - 1]))
       return repl + ','.repeat(TAGS.length) + 'true';
