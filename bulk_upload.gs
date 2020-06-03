@@ -32,6 +32,11 @@ const WHITELIST = {
   'DT_REQUEST': transform(addColumnBoolean, 'DT_REQUEST', 'DT_REQUEST,REQUEST'),
   'DT_RETURN': transform(addColumnBoolean, 'DT_RETURN', 'DT_RETURN,RETURN'),
   'DT_MAILED': transform(addColumnBoolean, 'DT_MAILED', 'DT_MAILED,MAILED'),
+  
+  // Type 'WFP voter ID':
+  'question[In District?]': true,
+  'question[Vote by mail?_1]': true,
+  'question[Voter Disposition]': true,
 };
 const TAGS = [
   'Absentee - Will get to it later',
