@@ -117,6 +117,7 @@ function doGet(ter) {
   
   // Time to actually remove the unwanted columns, then add the vanId one.
   var vanidx;
+  var unkeyed = false;
   csv = csv.replace(/^[^"\n]+/mg, function(line) {
     var fields = line.split(',');
     var line = [];
@@ -134,9 +135,17 @@ function doGet(ter) {
       return 'vanId,' + line;
     }
     
-    var id = fields[vanidx].replace(/^.+(\d{10})$/, '$1');
+    var id = fields[vanidx];
+    if(id)
+      id = id.replace(/^.+(\d{10})$/, '$1');
+    else
+      unkeyed = true;
     return id + ',' + line;
   });
+  
+  if(unkeyed)
+    return HtmlService.createHtmlOutput('Data file missing primary key column: \'' + vanid + '\'')
+                      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
   
   if(!csv.match(/^[^\n]+,tags\n/))
     return serve(filename, csv);
