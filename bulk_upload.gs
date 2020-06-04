@@ -121,7 +121,7 @@ function doGet(ter) {
   preserve = Object.fromEntries(preserve.filter(Array.isArray));
   
   // Time to actually remove the unwanted columns, then add the vanId one.
-  var vanidx;
+  var vanidx = -1;
   var unkeyed = false;
   csv = csv.replace(/^[^"\n]+/mg, function(line) {
     var fields = line.split(',');
@@ -135,7 +135,7 @@ function doGet(ter) {
     }
     line = line.join(',');
     
-    if(!vanidx) {
+    if(vanidx == -1) {
       vanidx = fields.indexOf(vanid);
       return 'vanId,' + line;
     }
