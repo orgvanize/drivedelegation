@@ -105,6 +105,9 @@ function doGet(ter) {
   // Start with a good 'ol dos2unix.
   csv = csv.replace(/\r/g, '');
   
+  // Remove double-double quotes since they compromise the comma replacement logic
+  csv = csv.replace(/""/g, '');
+  
   // And for my next trick, I'll disappear all strings except the last one.
   // This assumes that the tags column is the very last one!
   csv = csv.replace(/"([^"]+)",/g, function(match, quoted) {
