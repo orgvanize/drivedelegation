@@ -127,7 +127,7 @@ function doGet(ter) {
     var fields = line.split(',');
     var line = [];
     for(var idx = 0; idx < fields.length; ++idx) {
-      var transform = preserve[idx];
+      var transform = preserve[String(idx)];
       if(typeof transform == 'function')
         line.push(transform(fields[idx]));
       else if(transform)
