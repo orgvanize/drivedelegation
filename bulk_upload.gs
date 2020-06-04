@@ -19,6 +19,10 @@ const WHITELIST = {
   'question[Have they requested an absentee ballot yet?]': true,
   'question[Want additional help?]': true,
   
+  // Type 'HubDialer voter ID':
+  'Absentee Ballot': true,
+  'Support': true,
+  
   // Type 'Undecided phonebank':
   'First Call Date': true,
   'Pledge': true,
@@ -104,6 +108,13 @@ function doGet(ter) {
   
   // Start with a good 'ol dos2unix.
   csv = csv.replace(/\r/g, '');
+  
+  // Add a dummy column on non-Spoke files to force the comma replacement
+  // logic to apply to strings in the last column
+  // TODO: In the future, we should not treat the last column specially
+  if(!csv.match(/^[^\n]+,tags\n/)) {
+    csv = csv.replace(/$/mg, ",");
+  }
   
   // Remove double-double quotes since they compromise the comma replacement logic
   csv = csv.replace(/""/g, '');
