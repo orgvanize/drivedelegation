@@ -1,6 +1,8 @@
 // @OnlyCurrentDoc
 // Session.getEffectiveUser().getEmail()
 
+const USE_STAGING = false;
+
 const REQUESTS_SHEET = 'Requests';
 const TYPES_SHEET = 'Request types';
 
@@ -76,8 +78,15 @@ function doEdit(ed) {
   } else if(!range.isChecked())
     return;
   
-  var href = PropertiesService.getScriptProperties().getProperty('self') + '?record=' + range.getRow();
-  var link = HtmlService.createHtmlOutput('<a href="' + href + '">' + href + '</a>');
+  var self = 'self';
+  var target = '';
+  if(USE_STAGING) {
+    self += '_staging';
+    target = ' target="_blank"';
+  }
+  
+  var href = PropertiesService.getScriptProperties().getProperty(self) + '?record=' + range.getRow();
+  var link = HtmlService.createHtmlOutput('<a href="' + href + '"' + target + '>' + href + '</a>');
   SpreadsheetApp.getUi().showModalDialog(link, 'Click to download');
 }
 
