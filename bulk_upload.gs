@@ -23,7 +23,10 @@ const WHITELIST = {
   
   // Type 'HubDialer voter ID':
   'Absentee Ballot': true,
+  'Date': true,
+  'Phone Number': true,
   'Support': true,
+  'Status': true,
   
   // Type 'Undecided phonebank':
   'First Call Date': true,
