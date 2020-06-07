@@ -1,7 +1,7 @@
 // @OnlyCurrentDoc
 // Session.getEffectiveUser().getEmail()
 
-const USE_STAGING = false;
+const USE_STAGING = true;
 
 const REQUESTS_SHEET = 'Requests';
 const TYPES_SHEET = 'Request types';
@@ -44,6 +44,7 @@ const WHITELIST = {
   
   // Type 'WFP voter ID':
   'question[In District?]': true,
+  'question[VBM Issues?_1]': true,
   'question[Vote by mail?_1]': true,
   'question[Voter Disposition]': true,
 };
@@ -149,6 +150,7 @@ function doGet(ter) {
   // Time to actually remove the unwanted columns, then add the vanId one.
   var vanidx = -1;
   var unkeyed = false;
+  var datadump = {};
   csv = csv.replace(/^[^"\n]+/mg, function(line) {
     var fields = line.split(',');
     var line = [];
@@ -169,13 +171,15 @@ function doGet(ter) {
     var id = fields[vanidx];
     if(id)
       id = id.replace(/^.+(\d{10})$/, '$1');
-    else
+    else if(fields[0]) {
       unkeyed = true;
+      datadump = { fields: fields, vanidx: vanidx, id: id };
+    }
     return id + ',' + line;
   });
   
   if(unkeyed)
-    return HtmlService.createHtmlOutput('Data file missing primary key column: \'' + vanid + '\'')
+    return HtmlService.createHtmlOutput('Data file missing primary key column: \'' + vanid + '\'' + JSON.stringify(datadump))
                       .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
   
   var date = filename.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/);
