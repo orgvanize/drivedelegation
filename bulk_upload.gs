@@ -28,6 +28,9 @@ const WHITELIST = {
   'Support': true,
   'Status': true,
   
+  // Type 'Third Outreach':
+  'question[Will you reach out to 3-5 voters?]': true,
+  
   // Type 'Undecided phonebank':
   'First Call Date': true,
   'Pledge': true,
