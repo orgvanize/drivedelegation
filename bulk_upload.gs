@@ -129,7 +129,7 @@ function doGet(ter) {
   // logic to apply to strings in the last column
   // TODO: In the future, we should not treat the last column specially
   if(!csv.match(/^[^\n]+,tags\n/)) {
-    csv = csv.replace(/$/mg, ",");
+    csv = csv.replace(/\n/g, ",\n");
   }
   
   // Remove double-double quotes since they compromise the comma replacement logic
