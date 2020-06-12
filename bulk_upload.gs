@@ -20,6 +20,7 @@ const WHITELIST = {
   'question[Done submitting?]': true,
   'question[Have they requested an absentee ballot yet?]': true,
   'question[Want additional help?]': true,
+  'question[Will they actually vote in-person?]': true,
   
   // Type 'HubDialer voter ID':
   'Absentee Ballot': true,
@@ -27,6 +28,16 @@ const WHITELIST = {
   'Phone Number': true,
   'Support': true,
   'Status': true,
+  
+  // Type 'Persuasion Campaign':
+  'question[RO Ask_1]': true,
+  'question[RO Ask_2]': true,
+  'question[RO Ask_3]': true,
+  'question[RO Ask_4]': true,
+  'question[RO Ask_5]': true,
+  'question[VBM Issues?]': true,
+  'question[Vote by mail?]': true,
+  'question[Will they vote for Jamaal?]': true,
   
   // Type 'Third Outreach':
   'question[Will you reach out to 3-5 voters?]': true,
