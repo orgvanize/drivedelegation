@@ -17,7 +17,7 @@ const WHITELIST = {
   
   // Type 'Absentee ballot survey':
   'question[Do they see the link?]': true,
-  'question[Done submitting?]': true,
+  'question[Finished?]': true,
   'question[Have they requested an absentee ballot yet?]': true,
   'question[Want additional help?]': true,
   'question[Will they actually vote in-person?]': true,
