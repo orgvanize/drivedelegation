@@ -11,7 +11,7 @@ const FILENAME_COLUMN = 2;
 const CLAIM_COLUMN = 3;
 const DONE_COLUMN = 4;
 
-const WHITELIST = {
+const ALLOWLIST = {
   'contact[cell]': true,
   'contact[optOut]': true,
   
@@ -164,7 +164,7 @@ function doGet(ter) {
   // Compile a list of the columns we'll be preserving. Note that we always "keep" vanId.
   var preserve = csv.match(/^.*$/m)[0].split(',');
   for(var idx = 0; idx < preserve.length; ++idx) {
-    var action = WHITELIST[preserve[idx]];
+    var action = ALLOWLIST[preserve[idx]];
     if(action)
       preserve[idx] = [idx, action];
   }
