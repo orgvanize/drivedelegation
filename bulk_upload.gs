@@ -141,6 +141,10 @@ function doGet(ter) {
   // Start with a good 'ol dos2unix.
   csv = csv.replace(/\r/g, '');
   
+  // Terminate the file with a newline if there isn't one already.
+  if(!csv.endsWith('\n'))
+    csv += '\n';
+  
   // Add a dummy column on non-Spoke files to force the comma replacement
   // logic to apply to strings in the last column
   // TODO: In the future, we should not treat the last column specially
