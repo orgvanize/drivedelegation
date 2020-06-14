@@ -196,7 +196,9 @@ function doGet(ter) {
     return HtmlService.createHtmlOutput('Data file missing primary key column: \'' + vanid + '\'' + JSON.stringify(datadump))
                       .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
   
-  var date = filename.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/);
+  var date = filename.match(/[0-9]{4}[-_][0-9]{2}[-_][0-9]{2}/);
+  if(date)
+    date = date[0].replace(/_/g, '-');
   if(!csv.match(/^[^\n]+,tags\n/)) {
     if(date) {
       var labelled = false;
