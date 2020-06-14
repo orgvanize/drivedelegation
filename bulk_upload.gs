@@ -64,6 +64,7 @@ const WHITELIST = {
   
   // Type 'WFP voter ID consolidated':
   'cell': true,
+  'date_updated': transform(truncateColumnSpace, 'date_updated'),
   'question_response': true,
 };
 const TAGS = [
@@ -253,6 +254,10 @@ function transform(transform, oldlabel, newlabel = oldlabel) {
 
 function addColumnBoolean(value) {
   return value + ',' + Boolean(value);
+}
+
+function truncateColumnSpace(value) {
+  return value.split(' ')[0];
 }
 
 function lookup(table, key, fallback = null) {
