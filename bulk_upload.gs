@@ -61,6 +61,10 @@ const WHITELIST = {
   'question[VBM Issues?_1]': true,
   'question[Vote by mail?_1]': true,
   'question[Voter Disposition]': true,
+  
+  // Type 'WFP voter ID consolidated':
+  'cell': true,
+  'question_response': true,
 };
 const TAGS = [
   'Absentee - Will get to it later',
