@@ -202,12 +202,12 @@ function doGet(ter) {
   if(!csv.match(/^[^\n]+,tags\n/)) {
     if(date) {
       var labelled = false;
-      csv = csv.replace(/$/mg, function() {
+      csv = csv.replace(/\n/g, function() {
         if(!labelled) {
           labelled = true;
-          return ',date';
+          return ',date\n';
         }
-        return ',' + date;
+        return ',' + date + '\n';
       });
     }
     return serve(filename, csv);
