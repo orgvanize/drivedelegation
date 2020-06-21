@@ -172,7 +172,8 @@ function doGet(ter) {
   
   // Time to actually remove the unwanted columns, then add the vanId one.
   var vanidx = -1;
-  var unkeyed = false;
+  var unkeyed = 0;
+  var records = 0;
   var datadump = '';
   csv = csv.replace(/^[^"\n]+/mg, function(line) {
     var fields = line.split(',');
@@ -195,13 +196,15 @@ function doGet(ter) {
     if(id)
       id = id.replace(/^.+(\d{10})$/, '$1');
     else if(fields[0]) {
-      unkeyed = true;
+      id = '0';
+      ++unkeyed;
       datadump += '<br>' + JSON.stringify({ fields: fields, vanidx: vanidx, id: id });
     }
+    ++records;
     return id + ',' + line;
   });
   
-  if(unkeyed)
+  if(unkeyed == records)
     return HtmlService.createHtmlOutput('Data file missing primary key column: \'' + vanid + '\':' + datadump)
                       .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
   
