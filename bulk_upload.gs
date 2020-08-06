@@ -281,7 +281,16 @@ function lookup(table, key, fallback = null) {
                   .findNext();
   if(!cell)
     return fallback;
-  return sheet.getRange(cell.getRow(), 2).getValue();
+  
+  var cols = sheet.getLastColumn();
+  if(cols == 2)
+    return sheet.getRange(cell.getRow(), 2).getValue();
+  else {
+    var result = {};
+    for(var col = 2; col <= cols; ++col)
+      result[sheet.getRange(1, col).getValue()] = sheet.getRange(cell.getRow(), col).getValue();
+    return result;
+  }
 }
 
 function get(resource, authorization) {
