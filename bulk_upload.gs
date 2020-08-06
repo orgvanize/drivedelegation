@@ -168,8 +168,10 @@ function doGet(ter) {
           ALLOWLIST[vanid[heading]] = transform(function(value) {
             return addColumnBoolean(truncateColumnSpace(value));
           }, vanid[heading], heading + heading.replace(/.*_/, ','));
-        else
-          missing.push(heading.replace(/.*_/, ''));
+      else {
+        missing.push(heading);
+        missing.push(heading.replace(/.*_/, ''));
+      }
     if(missing.length) {
       var nays = missing.map(function() {
         return false;
