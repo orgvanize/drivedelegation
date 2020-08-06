@@ -272,7 +272,7 @@ function lookup(table, key, fallback = null) {
     return fallback;
   
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(table);
-  if(sheet.getLastRow() <= 2)
+  if(sheet.getLastRow() < 2)
     return fallback;
   
   var cell = sheet.getRange(2, 1, sheet.getLastRow() - 1)
