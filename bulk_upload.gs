@@ -189,7 +189,7 @@ function doGet(ter) {
     
     if(vanidx == -1) {
       vanidx = fields.indexOf(vanid);
-      return 'vanId,' + line;
+      return 'primary_key,' + line;
     }
     
     var id = fields[vanidx];
