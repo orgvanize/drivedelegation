@@ -165,7 +165,9 @@ function doGet(ter) {
     for(var heading in vanid)
       if(heading != 'no_header' && heading != 'primary_key')
         if(vanid[heading])
-          ALLOWLIST[vanid[heading]] = transform(addColumnBoolean, vanid[heading], heading + heading.replace(/.*_/, ','));
+          ALLOWLIST[vanid[heading]] = transform(function(value) {
+            return addColumnBoolean(truncateColumnSpace(value));
+          }, vanid[heading], heading + heading.replace(/.*_/, ','));
         else
           missing.push(heading.replace(/.*_/, ''));
     if(missing.length) {
