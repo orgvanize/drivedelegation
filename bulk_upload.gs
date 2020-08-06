@@ -152,6 +152,33 @@ function doGet(ter) {
     csv = csv.replace(/\n/g, ",\n");
   }
   
+  if(vanid.primary_key) {
+    if(vanid.no_header) {
+      var numcols = csv.replace(/\n.*/, '').replace(/"[^"]*"/g, '').replace(/[^,]+/g, '').length + 1;
+      var lblcols = new Array(numcols).fill(undefined).map(function(ign, index) {
+        return String.fromCharCode('A'.charCodeAt(0) + index);
+      });
+      csv = lblcols.join(',') + '\n' + csv;
+    }
+    
+    var missing = [];
+    for(var heading in vanid)
+      if(heading != 'no_header' && heading != 'primary_key')
+        if(vanid[heading])
+          ALLOWLIST[vanid[heading]] = transform(addColumnBoolean, vanid[heading], heading + heading.replace(/.*_/, ','));
+        else
+          missing.push(heading.replace(/.*_/, ''));
+    if(missing.length) {
+      var nays = missing.map(function() {
+        return false;
+      }).join(',');
+      ALLOWLIST[vanid.primary_key] = transform(function() {
+        return nays;
+      }, vanid.primary_key, missing.join(','));
+    }
+    vanid = vanid.primary_key;
+  }
+  
   // Remove double-double quotes since they compromise the comma replacement logic
   csv = csv.replace(/""/g, '');
   
