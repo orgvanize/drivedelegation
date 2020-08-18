@@ -12,76 +12,23 @@ const CLAIM_COLUMN = 3;
 const DONE_COLUMN = 4;
 
 const ALLOWLIST = {
-  'contact[cell]': true,
-  'contact[optOut]': true,
+  'Date Called': true,
+  'Voter Phone': true,
   
-  // Type 'Absentee ballot survey':
-  'question[Do they see the link?]': true,
-  'question[Finished?]': true,
-  'question[Have they requested an absentee ballot yet?]': true,
-  'question[Want additional help?]': true,
-  'question[Will they actually vote in-person?]': true,
+  // Type 'Thrutalk Spanish Voter ID Script Results':
+  // TODO 8/5/20: Per Jonah, wait on revised Spanish script
+  //'english_support': true,
+  //'english volunteer ask': true,
   
-  // Type 'HubDialer voter ID':
-  'Absentee Ballot': true,
-  'Date': true,
-  'Phone Number': true,
-  'Support': true,
-  'Status': true,
-  
-  // Type 'Persuasion Campaign':
-  'question[RO Ask_1]': true,
-  'question[RO Ask_2]': true,
-  'question[RO Ask_3]': true,
-  'question[RO Ask_4]': true,
-  'question[RO Ask_5]': true,
-  'question[VBM Issues?]': true,
-  'question[Vote by mail?]': true,
-  'question[Will they vote for Jamaal?]': true,
-  
-  // Type 'Third Outreach':
-  'question[Will you reach out to 3-5 voters?]': true,
-  
-  // Type 'Undecided phonebank':
-  'First Call Date': true,
-  'Pledge': true,
-  
-  // Type 'Virtual town hall':
-  'question[Will this person attend?]': true,
-  'tags': true,
-  
-  // Type 'Westchester absentee ballot request':
-  'DT_ADDED': transform(addColumnBoolean, 'DT_ADDED', 'DT_ADDED,ADDED'),
-  'DT_REQUEST': transform(addColumnBoolean, 'DT_REQUEST', 'DT_REQUEST,REQUEST'),
-  'DT_RETURN': transform(addColumnBoolean, 'DT_RETURN', 'DT_RETURN,RETURN'),
-  'DT_MAILED': transform(addColumnBoolean, 'DT_MAILED', 'DT_MAILED,MAILED'),
-  
-  // Type 'WFP voter ID':
-  'question[In District?]': true,
-  'question[VBM Issues?_1]': true,
-  'question[Vote by mail?_1]': true,
-  'question[Voter Disposition]': true,
-  
-  // Type 'WFP voter ID consolidated':
-  'cell': true,
-  'date_updated': transform(truncateColumnSpace, 'date_updated'),
-  'question_response': true,
+  // Type 'Thrutalk Voter ID Script Results':
+  'starting_question': true,
+  'support': true,
+  'undecided-support': true,
+  'VBM Ask': true,
+  'volunteer ask': true,
+  'Already Voted Support': true,
 };
-const TAGS = [
-  'Absentee - Will get to it later',
-  'Angry/Refused',
-  'Engel Supporter',
-  'Going to Attend',
-  'Maybe',
-  'Moved',
-  'Petition',
-  'Spanish',
-  'Supporter/Not going to attend',
-  'Trump supporter',
-  
-  // The last tag is special: if set, all others will be cleared!
-  'Wrong Number',
-];
+const TAGS = [];
 
 function doEdit(ed) {
   var range = ed.range;
